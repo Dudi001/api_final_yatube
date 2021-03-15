@@ -6,9 +6,9 @@ User = get_user_model()
 
 class Group(models.Model):
     title = models.CharField(
-        'Title',
+        'Заголовок',
         max_length=200,
-        help_text='You should specify a title'
+        help_text='Вы должны указать заголовок'
     )
 
     def __str__(self):
@@ -18,16 +18,16 @@ class Group(models.Model):
 class Post(models.Model):
     text = models.TextField()
     pub_date = models.DateTimeField(
-        "Дата публикации", auto_now_add=True
+        'Дата публикации', auto_now_add=True
     )
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="posts"
+        User, on_delete=models.CASCADE, related_name='posts'
     )
     group = models.ForeignKey(
         Group, blank=True, null=True,
         on_delete=models.SET_NULL,
         related_name='posts',
-        verbose_name='community',
+        verbose_name='группа',
     )
 
     def __str__(self):
@@ -36,28 +36,28 @@ class Post(models.Model):
 
 class Comment(models.Model):
     author = models.ForeignKey(
-        User, on_delete=models.CASCADE, related_name="comments"
+        User, on_delete=models.CASCADE, related_name='comments'
     )
     post = models.ForeignKey(
-        Post, on_delete=models.CASCADE, related_name="comments"
+        Post, on_delete=models.CASCADE, related_name='comments'
     )
     text = models.TextField()
     created = models.DateTimeField(
-        "Дата добавления", auto_now_add=True, db_index=True
+        'Дата добавления', auto_now_add=True, db_index=True
     )
 
 
 class Follow(models.Model):
     user = models.ForeignKey(
         User, on_delete=models.CASCADE,
-        verbose_name="Следящий", null=True, blank=True,
-        related_name="follower"
+        verbose_name='Следящий', null=True, blank=True,
+        related_name='follower'
     )
     following = models.ForeignKey(
         User, on_delete=models.SET_NULL,
-        verbose_name="Отслеживаемый",
+        verbose_name='Отслеживаемый',
         null=True, blank=True,
-        related_name="following"
+        related_name='following'
     )
 
     def __str__(self):
